@@ -1,153 +1,104 @@
 # 💼 Employee Salary Prediction Using Machine Learning
+### Supervised Regression | Python + Scikit-Learn
 
-> A Machine Learning project that predicts employee salaries based on demographic, educational, and professional attributes using various regression algorithms.
-
----
-
-## 🚀 Project Overview
-
-This project focuses on predicting employee salaries based on various factors such as **age**, **gender**, **education level**, **job title**, and **years of experience**. Multiple machine learning regression algorithms are trained and evaluated to identify the model that provides the most accurate salary predictions.
-
-The project demonstrates the complete machine learning workflow, including data preprocessing, exploratory data analysis, feature engineering, model training, and performance evaluation.
+> Regression models predicting employee salary from age, gender, education, job title and experience. The **Random Forest** performed best: **R² = 0.90, RMSE ≈ $15.6K** on a held-out test set.
 
 ---
 
-## 🎯 Problem Statement
+## 🎯 Objective
+**👉 Predict an employee's salary from demographic, educational and professional attributes.**
 
-Determining an employee's salary based on their qualifications and experience can be challenging. Traditional methods often rely on fixed salary structures and manual assessments.
-
-The goal of this project is to build a predictive model capable of accurately estimating salaries using employee-related attributes.
-
----
-
-## 📌 Objectives
-
-The primary objectives of this project are:
-
-- 📊 Analyze employee salary data
-- 🧹 Perform data cleaning and preprocessing
-- 🔍 Explore relationships between features and salary
-- 🔠 Transform categorical data into machine-readable format
-- 🤖 Train multiple regression models
-- 📉 Compare model performances
-- ✅ Select the best-performing model for salary prediction
+This is a **supervised regression problem**, where the target variable is `Salary`.
 
 ---
 
-## 📂 Dataset Features
+## 📈 Results
+Evaluated on a held-out 20% test set (about 75 records):
 
-The dataset contains the following attributes:
+| Model | R² Score | RMSE |
+|---|---|---|
+| Linear Regression | unstable* | unstable* |
+| Decision Tree Regressor | 0.8562 | 18,565 |
+| **Random Forest Regressor** | **0.8991** | **15,553** |
+| Gradient Boosting Regressor | 0.8818 | 16,836 |
 
-| Feature               | Description                         |
-|-----------------------|-------------------------------------|
-| Age                   | Employee age                        |
-| Gender                | Male / Female                       |
-| Education Level       | Bachelor's, Master's, PhD, etc.     |
-| Job Title             | Employee designation                |
-| Years of Experience   | Total years of work experience      |
-| Salary                | Target variable (Employee Salary)   |
+\* Plain Linear Regression was numerically unstable on 170+ one-hot columns with only about 300 training rows, so its score is not meaningful. Regularised regression (Ridge) is listed under Future Improvements.
 
----
+- Tree-based ensembles clearly outperformed a single Decision Tree
+- Random Forest's RMSE of about **$15.6K is roughly 15% of the average salary** ($100.6K)
 
-## 🛠️ Technologies Used
-
-### Languages & Libraries
-
-| Tool            | Purpose                        |
-|-----------------|-------------------------------|
-| Python          | Core programming language     |
-| Pandas          | Data manipulation             |
-| NumPy           | Numerical computations        |
-| Matplotlib      | Data visualization            |
-| Seaborn         | Statistical plots             |
-| Scikit-Learn    | Machine learning models       |
-| Jupyter Notebook| Interactive development       |
-
-### Development Environment
-- ☁️ **Google Colab**
+<!-- Optional: add a chart after saving it to an images/ folder
+![Salary Distribution](images/salary_distribution.png)
+-->
 
 ---
 
-## 📊 Project Workflow
+## 📂 Dataset
+- **Source:** Salary Data (CSV)
+<!-- Add the dataset link here, e.g. Kaggle: [Salary Data](URL) -->
+- **Records:** 375 rows, 373 after dropping rows with missing values
+- **Target Variable:** `Salary` (mean ≈ $100.6K, range $350 – $250K)
 
-### 1. 📥 Import Libraries
-Required libraries for data manipulation, visualization, and machine learning are imported.
-
-### 2. 📁 Load Dataset
-The employee salary dataset is loaded using Pandas.
-
-### 3. 🔎 Data Exploration
-- View dataset structure
-- Check data types
-- Analyze missing values
-- Generate statistical summaries
-
-### 4. 📉 Data Visualization
-Salary distribution is visualized using histogram plots to understand data spread.
-
-### 5. ⚙️ Data Preprocessing
-- Remove missing values
-- Convert **Gender** into numerical format
-- Apply **One-Hot Encoding** to:
-  - Education Level
-  - Job Title
-
-### 6. 🎯 Feature Selection
-Features (`X`) and target variable (`y`) are separated.
-
-### 7. ✂️ Train-Test Split
-Dataset is divided into training and testing sets.
-
-### 8. 🤖 Model Training
-The following regression models are trained:
-- Linear Regression
-- Decision Tree Regressor
-- Random Forest Regressor
-- Gradient Boosting Regressor
-
-### 9. 📈 Model Evaluation
-Models are evaluated using:
-- **R² Score**
-- **Root Mean Squared Error (RMSE)**
+| Feature | Description |
+|---|---|
+| Age | Employee age (23–53) |
+| Gender | Male / Female |
+| Education Level | Bachelor's, Master's, PhD |
+| Job Title | Employee designation (170+ unique titles) |
+| Years of Experience | 0–25 years |
+| Salary | Target variable |
 
 ---
 
-## 🤖 Machine Learning Models
+## ⚙️ Methodology
 
-### 🔹 Linear Regression
-A baseline regression model that assumes a linear relationship between features and salary.
+### 🔹 1. Data Exploration
+Checked structure, data types, missing values and summary statistics; plotted the salary distribution (histogram + KDE).
 
-### 🔹 Decision Tree Regressor
-A tree-based model that captures non-linear relationships.
+### 🔹 2. Data Preprocessing
+- Dropped rows with missing values (2 rows)
+- Mapped **Gender** to numeric (Male = 1, Female = 0)
+- **One-hot encoded** Education Level and Job Title (`drop_first=True`)
+- 80/20 train-test split (`random_state=42`)
 
-### 🔹 Random Forest Regressor
-An ensemble learning technique that combines multiple decision trees for better accuracy.
+### 🔹 3. Model Development
+Trained and compared four regressors: **Linear Regression** (baseline), **Decision Tree**, **Random Forest** and **Gradient Boosting**.
 
-### 🔹 Gradient Boosting Regressor
-A boosting algorithm that builds models sequentially to minimize prediction errors.
-
----
-
-## 📈 Evaluation Metrics
-
-### R² Score
-Measures how well the model explains the variance in salary data.
-
-### RMSE (Root Mean Squared Error)
-Measures the average prediction error in salary estimation.
+### 🔹 4. Model Evaluation
+Models compared using **R² Score** and **RMSE** on unseen test data.
 
 ---
 
-## 💡 Key Learnings
-
-- Handling missing data and encoding categorical variables for ML models
-- Comparing multiple regression algorithms using R² and RMSE metrics
-- Understanding the impact of features like job title and education on salary prediction
+## ⚠️ Limitations
+- **Small dataset** (373 rows): the test set has only about 75 records, so scores may vary with a different split
+- **Many job titles with few examples each**, so models may partly memorise title → salary
+- Default hyperparameters and a single train-test split (no tuning or cross-validation yet)
 
 ---
 
-## 👨‍💻 Author
+## 🗂 Project Structure
+```
+├── Employee Salary Prediction - ML Project.ipynb
+├── Salary Data.csv
+├── requirements.txt
+└── README.md
+```
 
-**Saiprakash Yamsani**
+## ▶️ How to Run
+```bash
+git clone https://github.com/Prakash102005/Employee-Salary-Prediction-ML.git
+cd Employee-Salary-Prediction-ML
+pip install -r requirements.txt
+jupyter notebook "Employee Salary Prediction - ML Project.ipynb"
+```
+Update the CSV path in the notebook so it points to `Salary Data.csv` in the project folder.
 
-*Machine Learning Project – Employee Salary Prediction using Python and Scikit-Learn.*
+---
+
+## 🛠 Tools & Technologies
+**Python** (Pandas, NumPy, Matplotlib, Seaborn) · **Scikit-learn** · Jupyter Notebook
+
+---
+
+## 👤 Author
+**Saiprakash Yamsani** | [GitHub](https://github.com/Prakash102005) | [LinkedIn](https://www.linkedin.com/in/)
